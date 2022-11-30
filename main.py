@@ -11,7 +11,10 @@ dp = Dispatcher(bot)
 async def on_startup(_):
     print('Bot started successfully!')
 
+async def test_func() -> str:
+    print('TEXT')
 
+test_func()
 
 
 @dp.message_handler(commands=['start'])

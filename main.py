@@ -1,22 +1,13 @@
-import os
-from dotenv import load_dotenv
-from aiogram import Bot, Dispatcher, executor, types
+from aiogram import executor
+from create_bot import dp
 
-load_dotenv()
+from handlers import client, admin, other
 
-bot = Bot(os.getenv('BOT_API'))
-dp = Dispatcher(bot)
-
+client.register_handlers_client(dp)
+other.register_handlers_other(dp) # тут пустой хендлер, поэтому он должен располагаться ниже
 
 async def on_startup(_):
     print('Bot started successfully!')
-
-
-
-@dp.message_handler(commands=['start'])
-async def start_command(message: types.Message):
-    await message.answer(text='Добро пожаловать в главное меню')
-
 
 
 if __name__ == '__main__':

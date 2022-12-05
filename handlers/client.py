@@ -2,7 +2,16 @@ from aiogram import types, Dispatcher
 from create_bot import bot
 from keyboards import kb_client
 from aiogram.types import ReplyKeyboardRemove
+
 import random
+
+'''Для того, чтобы в хендлерах улавливать сообщения с конкретным текстом в aiogram есть специальный фильтр:
+from aiogram.dispatcher.filters import Text
+
+@dp.message_handler(Text(equals='Начать работу',
+                         ignone_case=True)) # игнорировать регистр
+async def start_cmd(message: types.Message):
+'''
 
 
 HELP_COMMAND = """

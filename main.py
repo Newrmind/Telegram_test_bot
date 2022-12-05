@@ -1,10 +1,13 @@
 from aiogram import executor
 from create_bot import dp
+import pandas as pd
 
 from handlers import client, admin, other
 
 client.register_handlers_client(dp)
-other.register_handlers_other(dp) # тут пустой хендлер, поэтому он должен располагаться ниже
+admin.register_handlers_admin(dp)
+other.register_handlers_other(dp) # тут пустой хендлер, поэтому он должен располагаться в самом низу!!!
+
 
 async def on_startup(_):
     print('Bot started successfully!')

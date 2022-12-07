@@ -3,6 +3,8 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram import types, Dispatcher
 from create_bot import dp, bot
 from aiogram.dispatcher.filters import Text
+from data_base import sqlite_db
+from keyboards import admin_kb
 
 
 ID = None
@@ -17,7 +19,10 @@ class FSMAdmin(StatesGroup):
 async def make_changes_command(message: types.Message):
     global ID
     ID = message.from_user.id
-    await bot.send_message(message.from_user.id, 'What do you need?!!!')
+    await bot.send_message(message.from_user.id,
+                           text='What do you need?!!!',
+                           reply_markup=admin_kb.kb_admin)
+    await message.delete()
 
 # Начало диалога загрузки нового пункта меню
 #@dp.message_handler(commands='Загрузить', state=None)
@@ -78,14 +83,13 @@ async def load_price(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
             data['price'] = float(message.text) # получаем текст сообщения, переводим в число с плавающей точкой и записываем в словарь
 
-        # Выведем собранные данные в сообщении
-        async with state.proxy() as data:
-            await message.reply(str(data))
+        # Записываем данные в базу данных
+        await sqlite_db.sql_add_command(state)
 
             # завершаем работу FSM машины состояний
             # В результате выполнения команды state.finish() все собранные данные будут удалены, поэтому все действия с данными
             # необходимо произвести до вызова данной команды!!!
-            await state.finish()
+        await state.finish()
 
 
 

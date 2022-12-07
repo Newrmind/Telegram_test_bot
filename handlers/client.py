@@ -2,6 +2,7 @@ from aiogram import types, Dispatcher
 from create_bot import bot
 from keyboards import kb_client
 from aiogram.types import ReplyKeyboardRemove
+from data_base import sqlite_db
 
 import random
 
@@ -20,6 +21,7 @@ HELP_COMMAND = """
 <b>/description</> - <em>описание бота</em>
 <b>/send_photo</> - <em>отправка фото</em>
 <b>/send_random</> - <em>отправка случайного числа</em>
+<b>/menu</> - <em>показать меню пиццерии</em>
 """
 
 async def start_command(message: types.Message):
@@ -45,8 +47,11 @@ async def send_random_num_command(message: types.Message):
 
 async def send_description(message: types.Message):
     await bot.send_message(chat_id=message.chat.id,
-                           text='Наш бот умеет отправлять картинку и случайное число!',
+                           text='Наш бот классный!',
                            reply_markup=ReplyKeyboardRemove())
+
+async def send_menu(message: types.Message):
+    await sqlite_db.sql_read(message)
 
 
 # Убираем декораторы и регистрируем обработку команд в отдельной функции
@@ -55,3 +60,4 @@ def register_handlers_client(dp: Dispatcher):
     dp.register_message_handler(command_send_photo, commands=['send_photo'])
     dp.register_message_handler(send_random_num_command, commands=['send_random'])
     dp.register_message_handler(send_description, commands=['description'])
+    dp.register_message_handler(send_menu, commands=['menu'])

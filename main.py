@@ -1,8 +1,8 @@
 from aiogram import executor
-from create_bot import dp
-import pandas as pd
 
+from create_bot import dp
 from handlers import client, admin, other
+from data_base import sqlite_db
 
 client.register_handlers_client(dp)
 admin.register_handlers_admin(dp)
@@ -11,6 +11,7 @@ other.register_handlers_other(dp) # тут пустой хендлер, поэт
 
 async def on_startup(_):
     print('Bot started successfully!')
+    sqlite_db.sql_start() # Функция запуска базы данных
 
 
 if __name__ == '__main__':
